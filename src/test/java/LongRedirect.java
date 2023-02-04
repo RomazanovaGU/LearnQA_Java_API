@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 public class LongRedirect {
     @Test
     public void testGetTextFromPlayground(){
-        Response response = RestAssured.
-                given()
+        Response response = RestAssured
+                .given()
                 .redirects()
                 .follow(false)
                 .when()
