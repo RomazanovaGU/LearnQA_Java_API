@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class LongRedirect {
     @Test
-    public void testGetTextFromPlayground(){
+    public void printUrlOfFirstRedirect(){
         Response response = RestAssured
                 .given()
                 .redirects()
@@ -15,3 +15,4 @@ public class LongRedirect {
         System.out.println("Redirect to:  " + response.getHeader("Location"));
     }
 }
+
