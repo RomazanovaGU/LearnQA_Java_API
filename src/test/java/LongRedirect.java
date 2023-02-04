@@ -14,5 +14,6 @@ public class LongRedirect {
                 .andReturn();
         System.out.println("Redirect to:  " + response.getHeader("Location"));
     }
-}
+
+};
 
