@@ -1,3 +1,5 @@
+package lecture1_3;
+
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;

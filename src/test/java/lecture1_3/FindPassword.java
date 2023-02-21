@@ -1,3 +1,5 @@
+package lecture1_3;
+
 import io.restassured.RestAssured;
 import io.restassured.http.Cookie;
 import io.restassured.path.json.JsonPath;
