@@ -18,9 +18,9 @@ public class UserGetTest extends BaseTestCase {
         Assertions.assertJsonHasField(responseUserData, "username");
         Assertions.assertJsonHasNotField(responseUserData, "firstName");
         Assertions.assertJsonHasNotField(responseUserData, "lastName");
-        Assertions.assertJsonHasNotField(responseUserData, "emailName");
+        Assertions.assertJsonHasNotField(responseUserData, "email");
     }
-
+@Test
     public void testGetUserDetailsAuthAsSameUser(){
         Map<String,String> authData = new HashMap<>();
         authData.put("email", "vinkotov@example.com");
@@ -41,7 +41,8 @@ public class UserGetTest extends BaseTestCase {
                 .cookie("auth_sid", cookie)
                 .get("https://playground.learnqa.ru/api/user/2")
                 .andReturn();
-        String [] expectedFields = {"username", "firstMame", "LastName", "email",};
+        System.out.println("Content of body: " + responseUserData.asString());
+        String [] expectedFields = {"username", "firstName", "lastName", "email",};
         Assertions.assertJsonHasFields(responseUserData, expectedFields);
     }
 }
