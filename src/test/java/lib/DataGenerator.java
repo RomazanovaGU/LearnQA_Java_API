@@ -23,7 +23,7 @@ public class DataGenerator {
     public static Map<String, String> getRegistrationData(Map<String,String> nonDefaultValues){
         Map<String, String> defaultValue = DataGenerator.getRegistrationData();
         Map<String, String> userData = new HashMap<>();
-        String [] keys = {"email", "password", "username", "firstname", "lastname"};
+        String [] keys = {"email", "password", "username", "firstName", "lastName"};
         for(String key : keys) {
             if (nonDefaultValues.containsKey(key)){
                 userData.put(key, nonDefaultValues.get(key));
