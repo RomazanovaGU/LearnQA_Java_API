@@ -1,30 +1,56 @@
 package tests;
 
+import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
+import lib.Assertions;
 import lib.BaseTestCase;
+import lib.DataGenerator;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import java.util.Map;
 
 public class UserRegisterTest extends BaseTestCase {
-    protected String getHeader (Response Response, String name){
-        Headers headers = Response.getHeaders();
+@Test
+    public void testCreateUserExistingEmail(){
+    String email = "vinkotov@example.com";
+    Map<String, String> userData = new HashMap<>();
+    userData.put("email", email);
+    userData.put("password", "123");
+    userData.put("username", "learnqa");
+    userData.put("firstName", "learnqa");
+    userData.put("lastName", "learnqa");
 
-        assertTrue(headers.hasHeaderWithName(name), "Response doesn't have header with name " + name);
-        return headers.getValue(name);
-    }
-    protected String getCookie (Response Response, String name){
-        Map<String, String> cookies = Response.getCookies();
+    Response responseCreateAuth = RestAssured
+            .given()
+            .body(userData)
+            .post("https://playground.learnqa.ru/api/user/")
+            .andReturn();
+    Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
+    Assertions.assertResponseTextEquals(responseCreateAuth, "Users with email '" + email + "' already exists");
+}
+    @Test
+    public void testCreateUserSuccessfully(){
+        String email = DataGenerator.getRandomEmail();
+        Map<String, String> userData = new HashMap<>();
+        userData.put("email", email);
+        userData.put("password", "123");
+        userData.put("username", "learnqa");
+        userData.put("firstName", "learnqa");
+        userData.put("lastName", "learnqa");
 
-        assertTrue(cookies.containsKey(name), "Response doesn't have cookie with name " + name);
-        return cookies.get(name);
-    }
-    protected int getIntFromJson (Response Response, String name){
-        Response.then().assertThat().body("$", hasKey(name));
-        return Response.jsonPath().getInt(name);
+        Response responseCreateAuth = RestAssured
+                .given()
+                .body(userData)
+                .post("https://playground.learnqa.ru/api/user/")
+                .andReturn();
+        Assertions.assertResponseCodeEquals(responseCreateAuth, 200);
+        Assertions.assertJsonHasField(responseCreateAuth, "id");
     }
 }
