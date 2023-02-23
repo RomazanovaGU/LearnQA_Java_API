@@ -85,43 +85,46 @@ public class UserEditTest extends BaseTestCase {
     @Description("This test checks auth user cannot edit another user data")
     @DisplayName("Test negative edit user data by another user")
     public void testEditUserWithAnotherAuthUserTest(){
-        //GENERATE USER
+        //GENERATE USER FOR EDITING
         Map <String, String> userData = DataGenerator.getRegistrationData();
         Response responseCreateUser = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/", userData);
-        String userId = responseCreateUser.jsonPath().getString("id");
+        String userIdEditUser = responseCreateUser.jsonPath().getString("id");
 
-        //LOGIN AS ANOTHER USER
+        //GENERATE NEW USER AS EDITOR
+        Map <String, String> userDataOfEditor = DataGenerator.getRegistrationData();
+        Response responseCreateUser1 = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/", userDataOfEditor);
+        String userIdEditor = responseCreateUser1.jsonPath().getString("id");
+
+        //LOGIN AS EDITOR USER
         Map <String, String> authData = new HashMap<>();
-        authData.put("email", "vinkotov@example.com");
-        authData.put("password", "1234");
+        authData.put("email", userDataOfEditor.get("email"));
+        authData.put("password", userDataOfEditor.get("password"));
 
-        Response responseGetAuthAsAnotherUser = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login", authData);
-        this.cookie = this.getCookie(responseGetAuthAsAnotherUser, "auth_sid");
-        this.header = this.getHeader(responseGetAuthAsAnotherUser, "x-csrf-token");
+        Response responseGetAuthAsEditorUser = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login", authData);
+        this.cookie = this.getCookie(responseGetAuthAsEditorUser, "auth_sid");
+        this.header = this.getHeader(responseGetAuthAsEditorUser, "x-csrf-token");
 
         //EDIT
         String newName = "Changed Name";
         Map <String, String> editData = new HashMap<>();
         editData.put("firstName", newName);
-        Response responseEditUser = apiCoreRequests.makePutRequestAuth("https://playground.learnqa.ru/api/user/" + userId, editData, header, cookie);
-        Assertions.assertResponseCodeEquals(responseEditUser, 400);
-        Assertions.assertResponseTextEquals(responseEditUser, "Please, do not edit test users with ID 1, 2, 3, 4 or 5.");
+        Response responseEditUser = apiCoreRequests.makePutRequestAuth("https://playground.learnqa.ru/api/user/" + userIdEditUser, editData, header, cookie);
 
-        //LOGIN AS CREATED USER
-        Map <String, String> authDataCreatedUser = new HashMap<>();
-        authDataCreatedUser.put("email", userData.get("email"));
-        authDataCreatedUser.put("password", userData.get("password"));
+        //LOGIN AS USER FOR EDITING
+        Map <String, String> authDataUserForEditing = new HashMap<>();
+        authDataUserForEditing.put("email", userData.get("email"));
+        authDataUserForEditing.put("password", userData.get("password"));
 
-        Response responseGetAuthAsCreatedUser = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login", authDataCreatedUser);
+        Response responseGetAuthAsCreatedUser = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login", authDataUserForEditing);
         this.cookie = this.getCookie(responseGetAuthAsCreatedUser, "auth_sid");
         this.header = this.getHeader(responseGetAuthAsCreatedUser, "x-csrf-token");
 
         //GET
-        Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/" + userId, header, cookie);
+        Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/" + userIdEditUser, header, cookie);
         Assertions.assertJsonByName(responseUserData, "firstName", userData.get("firstName"));
     }
     @Test
-    @Description("This test checks ability to edit email with invalid format")
+    @Description("This test checks impossibility to edit email with invalid format")
     @DisplayName("Test negative edit email with invalid format")
     public void testEditEmailTest(){
         //GENERATE USER
@@ -151,7 +154,7 @@ public class UserEditTest extends BaseTestCase {
         Assertions.assertJsonByName(responseUserData, "email", userData.get("email"));
     }
     @Test
-    @Description("This test checks ability to edit firstName with short value")
+    @Description("This test checks impossibility to edit firstName with short value")
     @DisplayName("Test negative edit firstName with short value")
     public void testEditFirstNameTest() {
         //GENERATE USER

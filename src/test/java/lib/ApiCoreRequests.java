@@ -108,11 +108,21 @@ public class ApiCoreRequests {
                 .andReturn();
     }
     @Step("Make a PUT-request without token and auth cookie")
-    public Response makePutRequestNotAuth (String url, Map<String, String> userData){
+    public Response makePutRequestNotAuth (String url, Map<String, String> userData) {
         return given()
                 .filter(new AllureRestAssured())
                 .body(userData)
                 .put(url)
                 .andReturn();
     }
+
+        @Step("Make a DELETE-request with token and auth cookie")
+        public Response makeDeleteRequestAuth (String url, String token, String cookie){
+            return given()
+                    .filter(new AllureRestAssured())
+                    .header(new Header("x-csrf-token", token))
+                    .cookie("auth_sid", cookie)
+                    .delete(url)
+                    .andReturn();
+        }
 }
