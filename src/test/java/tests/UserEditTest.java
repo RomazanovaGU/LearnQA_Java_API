@@ -92,8 +92,7 @@ public class UserEditTest extends BaseTestCase {
 
         //GENERATE NEW USER AS EDITOR
         Map <String, String> userDataOfEditor = DataGenerator.getRegistrationData();
-        Response responseCreateUser1 = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/", userDataOfEditor);
-        String userIdEditor = responseCreateUser1.jsonPath().getString("id");
+        Response responseCreateEditorUser = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/", userDataOfEditor);
 
         //LOGIN AS EDITOR USER
         Map <String, String> authData = new HashMap<>();
