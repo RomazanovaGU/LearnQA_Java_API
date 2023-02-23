@@ -36,7 +36,7 @@ public class ApiCoreRequests {
                 .get(url)
                 .andReturn();
     }
-    @Step("Make a POST-request")
+    @Step("Make a POST-request with authData in body")
     public Response makePostRequest (String url, Map<String, String> authData){
         return given()
                 .filter(new AllureRestAssured())
@@ -44,6 +44,7 @@ public class ApiCoreRequests {
                 .post(url)
                 .andReturn();
     }
+
     @Step("Make a POST-request for user registration with invalid email parameter")
     public Response makePostRequestWithInvalidEmailParam (String url, String invalidEmail){
         Map <String, String> updatedUserData = DataGenerator.getRegistrationData();
@@ -95,5 +96,23 @@ public class ApiCoreRequests {
                     .andReturn();
         }
         return null;
+    }
+    @Step("Make a PUT-request with token and auth cookie")
+    public Response makePutRequestAuth (String url, Map<String, String> userData, String token, String cookie){
+        return given()
+                .filter(new AllureRestAssured())
+                .header(new Header("x-csrf-token", token))
+                .cookie("auth_sid", cookie)
+                .body(userData)
+                .put(url)
+                .andReturn();
+    }
+    @Step("Make a PUT-request without token and auth cookie")
+    public Response makePutRequestNotAuth (String url, Map<String, String> userData){
+        return given()
+                .filter(new AllureRestAssured())
+                .body(userData)
+                .put(url)
+                .andReturn();
     }
 }
