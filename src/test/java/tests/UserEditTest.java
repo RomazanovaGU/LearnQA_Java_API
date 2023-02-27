@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Links;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -16,6 +17,7 @@ import java.util.Map;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Links;
 import  org.junit.jupiter.api.DisplayName;
 
 @Epic("Edit user cases")
@@ -124,6 +126,7 @@ public class UserEditTest extends BaseTestCase {
     }
     @Test
     @Description("This test checks impossibility to edit email with invalid format")
+    @Links({})
     @DisplayName("Test negative edit email with invalid format")
     public void testEditEmailTest(){
         //GENERATE USER

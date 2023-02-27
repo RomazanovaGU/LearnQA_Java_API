@@ -17,8 +17,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 
 
-@Epic("Get User cases")
-@Story("Get User")
+@Epic("EP-210: Get User cases")
+@Story("CORP-111: Get User")
 public class UserGetTest extends BaseTestCase {
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 

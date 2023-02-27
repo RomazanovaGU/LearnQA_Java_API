@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.TmsLink;
 import io.restassured.response.Response;
 import lib.BaseTestCase;
 import lib.ApiCoreRequests;
@@ -22,6 +23,8 @@ public class UserDeleteTest extends BaseTestCase {
     String cookie;
     String header;
     @Test
+    @TmsLink("CORP-2030")
+
     @Description("This test checks impossibility to delete user with ID=2")
     @DisplayName("Test negative delete user with id 2")
     public void testTryToDeleteDefaultUserTest(){
