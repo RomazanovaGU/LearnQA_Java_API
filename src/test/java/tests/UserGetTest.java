@@ -1,8 +1,6 @@
 package tests;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lib.Assertions;
@@ -18,12 +16,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 
+
 @Epic("Get User cases")
-@Feature("Get User")
+@Story("Get User")
 public class UserGetTest extends BaseTestCase {
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     @Test
+    @Links ({@Link( name="TC1", url="https://playground.learnqa.ru"),@Link (name = "Story-124", url="https://playground.learnqa.ru")})
+    @Severity(value = SeverityLevel.NORMAL)
     @Description("This test checks that non-auth request gets username only")
     @DisplayName("Test positive non-auth request gets username only")
     public void testGetUserDataNotAuth(){
@@ -36,7 +37,9 @@ public class UserGetTest extends BaseTestCase {
         Assertions.assertJsonHasNotField(responseUserData, "email");
     }
 @Test
+@Links ({@Link( name="TC2", url="https://playground.learnqa.ru"),@Link (name = "Story-124", url="https://playground.learnqa.ru")})
 @Description("This test checks that auth request gets all params")
+@Severity(value = SeverityLevel.NORMAL)
 @DisplayName("Test positive auth request gets all params")
     public void testGetUserDetailsAuthAsSameUser(){
         Map<String,String> authData = new HashMap<>();
@@ -53,6 +56,8 @@ public class UserGetTest extends BaseTestCase {
         Assertions.assertJsonHasFields(responseUserData, expectedFields);
     }
     @Test
+    @Links ({@Link( name="TC3", url="https://playground.learnqa.ru"),@Link (name = "Story-124", url="https://playground.learnqa.ru")})
+    @Severity(value = SeverityLevel.NORMAL)
     @Description("This test checks that auth request of another user gets username only")
     @DisplayName("Test positive auth request of another user gets username only")
     public void testGetUserDetailsAuthAsAnotherUser(){
