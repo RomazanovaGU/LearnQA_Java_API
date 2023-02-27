@@ -24,7 +24,7 @@ public class UserGetTest extends BaseTestCase {
 
     @Test
     @Links ({@Link( name="TC1", url="https://playground.learnqa.ru"),@Link (name = "Story-124", url="https://playground.learnqa.ru")})
-    @Severity(value = SeverityLevel.NORMAL)
+    @Severity(value = SeverityLevel.CRITICAL)
     @Description("This test checks that non-auth request gets username only")
     @DisplayName("Test positive non-auth request gets username only")
     public void testGetUserDataNotAuth(){
